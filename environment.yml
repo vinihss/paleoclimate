@@ -1,13 +1,11 @@
-# environment.yml
 name: paleoclimate-backend
 channels:
-  - conda-forge
+  - defaults
 dependencies:
   - python=3.9
   - fastapi=0.65.2
   - uvicorn=0.14.0
   - sqlalchemy=1.4.22
   - pydantic=1.8.2
-  - pip
   - pip:
-    - setuptools
+    - pytest
