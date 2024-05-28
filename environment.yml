@@ -1,5 +1,6 @@
 name: paleoclimate-backend
 channels:
+  - conda-forge
   - defaults
 dependencies:
   - python=3.9
@@ -12,5 +13,6 @@ dependencies:
   - flake8
   - black
   - autopep8
+  - python-multipart
   - pip:
     - pytest

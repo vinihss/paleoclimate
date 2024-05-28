@@ -8,6 +8,7 @@ setup(
         "fastapi",
         "uvicorn",
         "sqlalchemy",
-        "pydantic"
+        "pydantic",
+        "pandas"
     ]
 )
