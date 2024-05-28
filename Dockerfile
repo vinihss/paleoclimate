@@ -9,8 +9,6 @@ RUN conda env create -f environment.yml
 # Make RUN commands use the new environment:
 SHELL ["conda", "run", "-n", "paleoclimate-backend", "/bin/bash", "-c"]
 
-# Install pip requirements
-COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
