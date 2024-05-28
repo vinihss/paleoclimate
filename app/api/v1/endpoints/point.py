@@ -1,8 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from sqlalchemy.orm import Session
 from app.db.session import SessionLocal
 from app.schemas.point import Point, PointCreate
-from app.services.point_service import create_point, delete_point, get_point, get_points, update_point
+from app.services.point_service import create_point, delete_point, get_point, get_points, update_point, import_points_from_csv
+import pandas as pd
+import io
 
 router = APIRouter()
 
@@ -35,3 +37,10 @@ def update_point_api(point_id: int, point: PointCreate, db: Session = Depends(ge
 @router.delete("/{point_id}", response_model=Point)
 def delete_point_api(point_id: int, db: Session = Depends(get_db)):
     return delete_point(db=db, point_id=point_id)
+
+@router.post("/import-csv")
+def import_points_csv(file: UploadFile = File(...), db: Session = Depends(get_db)):
+    contents = file.file.read().decode("utf-8")
+    data = pd.read_csv(io.StringIO(contents))
+    import_points_from_csv(db=db, data=data)
+    return {"message": "CSV file imported successfully"}
