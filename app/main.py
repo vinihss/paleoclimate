@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.api.v1.endpoints import point
+from app.presentation.api import point
 
 app = FastAPI()
 

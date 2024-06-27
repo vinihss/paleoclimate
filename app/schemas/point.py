@@ -1,18 +1,18 @@
-from pydantic import BaseModel
 
-class PointBase(BaseModel):
+from pydantic import BaseModel, Field
+
+
+class PointBaseSchema(BaseModel):
+    basin: str
     lat: float
     long: float
-    max_age: int
-    min_age: int
-    weight: float
     climate: str
-
-class PointCreate(PointBase):
+    class Config:
+        orm_mode = True
+class PointCreateSchema(PointBaseSchema):
     pass
 
-class Point(PointBase):
+class PointSchema(PointBaseSchema):
     id: int
-
     class Config:
         orm_mode = True

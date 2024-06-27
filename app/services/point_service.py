@@ -1,44 +1,41 @@
-from sqlalchemy.orm import Session
 from app.db.models.point import Point
-from app.schemas.point import PointCreate
+from app.db.repositories.PointRepository import PointRepository
+from app.schemas.point import PointCreateSchema
+from app.validations.point_validations import validate_point_data
 import pandas as pd
 
-def get_point(db: Session, point_id: int):
-    return db.query(Point).filter(Point.id == point_id).first()
 
-def get_points(db: Session, skip: int = 0, limit: int = 10):
-    return db.query(Point).offset(skip).limit(limit).all()
 
-def create_point(db: Session, point: PointCreate):
-    db_point = Point(**point.dict())
-    db.add(db_point)
-    db.commit()
-    db.refresh(db_point)
-    return db_point
+class PointService:
+    def __init__(self, point_repository: PointRepository):
+        self.point_repository = point_repository
 
-def update_point(db: Session, point_id: int, point: PointCreate):
-    db_point = db.query(Point).filter(Point.id == point_id).first()
-    for key, value in point.dict().items():
-        setattr(db_point, key, value)
-    db.commit()
-    db.refresh(db_point)
-    return db_point
+    def create_point(self, basin: str, lat: float, long: float, climate: str):
+        point = Point(basin=basin, lat=lat, long=long, climate=climate)
+        validate_point_data(point)
+        self.point_repository.add(point)
+        return point
 
-def delete_point(db: Session, point_id: int):
-    db_point = db.query(Point).filter(Point.id == point_id).first()
-    db.delete(db_point)
-    db.commit()
-    return db_point
+    def get_point(self, point_id: int):
+        return self.point_repository.get(point_id)
 
-def import_points_from_csv(db: Session, data: pd.DataFrame):
-    for _, row in data.iterrows():
-        point = Point(
-            lat=row['lat'],
-            long=row['long'],
-            max_age=row['max_age'],
-            min_age=row['min_age'],
-            weight=row['weight'],
-            climate=row['climate']
-        )
-        db.add(point)
-    db.commit()
+    def get_points(self, skip: int = 0, limit: int = 10):
+        return self.point_repository.list(skip, limit)
+    def update_point(self, point_id: int, basin: str, lat: float, long: float, climate: str):
+        point = Point(id=point_id, basin=basin, lat=lat, long=long, climate=climate)
+        validate_point_data(point)
+        return self.point_repository.update(point)
+
+    def delete_point(self, point_id: int):
+        return self.point_repository.delete(point_id)
+
+    def import_points_from_csv(self, data: pd.DataFrame):
+        for _, row in data.iterrows():
+            print(data)
+            self.create_point(
+                basin=data.basin,
+                lat=data.lat,
+                long=data.long,
+                climate=data.climate
+            )
+

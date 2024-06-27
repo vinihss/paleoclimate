@@ -1,4 +1,4 @@
-name: paleoclimate-backend
+name: paleoclimate
 channels:
   - conda-forge
   - defaults
