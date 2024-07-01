@@ -1,4 +1,4 @@
-from app.db.models.point import Point
+from app.db.entities.point import Point
 from app.db.repositories.PointRepository import PointRepository
 from app.schemas.point import PointCreateSchema
 from app.validations.point_validations import validate_point_data

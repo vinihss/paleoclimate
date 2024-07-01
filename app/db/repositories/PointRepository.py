@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from app.db.models.point import Point
+from app.db.entities.point import Point
 
 class PointRepository:
     def __init__(self, session: Session):
