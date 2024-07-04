@@ -25,6 +25,7 @@ class PointRepository:
             existing_point.lat = point.lat
             existing_point.long = point.long
             existing_point.climate = point.climate
+            existing_point.age = point.age
             self.session.commit()
             return existing_point
         return None

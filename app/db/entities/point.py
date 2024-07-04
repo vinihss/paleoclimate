@@ -9,3 +9,4 @@ class Point(Base):
     lat = Column(Float(11), nullable=False)
     long = Column(Float(11), nullable=False)
     climate = Column(String(1), nullable=False)
+    age = Column(Integer, nullable=False)

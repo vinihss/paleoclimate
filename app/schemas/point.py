@@ -7,8 +7,12 @@ class PointBaseSchema(BaseModel):
     lat: float
     long: float
     climate: str
+    age: int
     class Config:
         orm_mode = True
+class PointCreateSchema(PointBaseSchema):
+    pass
+
 class PointCreateSchema(PointBaseSchema):
     pass
 

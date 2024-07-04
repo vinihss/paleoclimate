@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html>
+
+<script>// Busca os dados do backend
+      const response = await axios.get('http://localhost:8000/timescale');
+
+</script>
+<head>
+  <title>Electron Leaflet</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+  <div id="map"></div>
+  <div id="controls">
+    <label for="mapAge">Idade do Mapa:</label>
+           Escolha uma opção:
+          <select id="mapAge" value={this.state.value} onChange={this.handleChange}>
+            <option value="opcao1">Opção 1</option>
+          </select>
+    <label for="dataRange">Intervalo de Idade dos Dados:</label>
+    <input type="text" id="dataRange" />
+  </div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <script src="renderer.js"></script>3
+</body>
+</html>
+        

@@ -6,13 +6,14 @@ import pandas as pd
 
 
 
+
 class PointService:
     def __init__(self, point_repository: PointRepository):
         self.point_repository = point_repository
 
-    def create_point(self, basin: str, lat: float, long: float, climate: str):
-        point = Point(basin=basin, lat=lat, long=long, climate=climate)
-        validate_point_data(point)
+    def create_point(self, basin: str, lat: float, long: float, climate: str, age: int):
+        point = Point(basin=basin, lat=lat, long=long, climate=climate, age=age)
+
         self.point_repository.add(point)
         return point
 
@@ -21,21 +22,14 @@ class PointService:
 
     def get_points(self, skip: int = 0, limit: int = 10):
         return self.point_repository.list(skip, limit)
-    def update_point(self, point_id: int, basin: str, lat: float, long: float, climate: str):
-        point = Point(id=point_id, basin=basin, lat=lat, long=long, climate=climate)
+    def update_point(self, point_id: int, basin: str, lat: float, long: float, climate: str, age: int):
+        point = Point(id=point_id, basin=basin, lat=lat, long=long, climate=climate, age=point.age)
         validate_point_data(point)
         return self.point_repository.update(point)
 
     def delete_point(self, point_id: int):
         return self.point_repository.delete(point_id)
 
-    def import_points_from_csv(self, data: pd.DataFrame):
-        for _, row in data.iterrows():
-            print(data)
-            self.create_point(
-                basin=data.basin,
-                lat=data.lat,
-                long=data.long,
-                climate=data.climate
-            )
+
+
 

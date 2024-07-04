@@ -14,5 +14,7 @@ dependencies:
   - black
   - autopep8
   - python-multipart
+  - openpyxl
+  - loguru
   - pip:
     - pytest
