@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizador de Mapa - OpenLayers</title>
+    <style>
+        .map {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+
+<body>
+<div id="map" class="map"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/10.0.0/index.js" integrity="sha512-+o0vxcUhkW07ZmZ3vD13Wgt0bzTXqmUIbqNSyCWfBiEv8Ziq9BExylSJTQVjEvT6YU2Ob6Bq1MUPDnwn7U6Mng==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script>
+    // Criando a camada base do mapa (OSM)
+    const map = new Map({
+        target: 'map',
+        layers: [
+            new layer.Tile({
+                source: new source.OSM()
+            })
+        ],
+        view: new View({
+            center: proj.fromLonLat([-50, -15]), // Centro do mapa (Brasil)
+            zoom: 4
+        })
+    });
+
+    // Dados de exemplo (substitua por seus dados)
+    const pontos = [
+        { bacia: "camamu-almada", latitude: -13.83, longitude: -38.5, paleoclima: "h" },
+        { bacia: "araripe", latitude: -7.50, longitude: -39.5, paleoclima: "h" },
+        // Adicione mais pontos aqui
+    ];
+
+    // Adicionando os pontos ao mapa
+    pontos.forEach(ponto => {
+        const marker = new Feature({
+            geometry: new geom.Point(proj.fromLonLat([ponto.longitude, ponto.latitude])),
+            name: ponto.bacia,
+            paleoclima: ponto.paleoclima
+        });
+
+        const vectorSource = new source.Vector({
+            features: [marker]
+        });
+
+        const markerVectorLayer = new layer.Vector({
+            source: vectorSource,
+            style: new style.Style({
+                image: new style.Icon({
+                    anchor: [0.5, 1],
+                    src: 'https://cdn.jsdelivr.net/gh/openlayers/ol-website@master/examples/data/icon.png'
+                })
+            })
+        });
+
+        map.addLayer(markerVectorLayer);
+    });
+</script>
+</body>
+</html>
