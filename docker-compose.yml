@@ -1,9 +1,41 @@
+version: '3.8'
 services:
-  web:
-    build: .
+  postgres:
+    image: postgres:latest
+    container_name: paleo_postgres
+    environment:
+      POSTGRES_USER: paleoclimate
+      POSTGRES_PASSWORD: paleoclimate
+      POSTGRES_DB: paleoclimate
     ports:
-      - "8000:8000"
-      - "5678:5678"  # Port for debugpy
+      - "5432:5432"
     volumes:
-      - .:/app
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend  # Assuming backend is in the 'backend' directory
     command: ["./scripts/start.sh"]
+    volumes:
+      - ./backend:/app  # Mount code for live-reloading
+    ports:
+      - "8002:8002"
+    depends_on:
+      - postgres
+    environment:
+      - FASTAPI_ENV=development  # Use this for environment-specific settings
+
+  frontend:
+    build:
+      context: ./frontend  # Assuming frontend is in the 'frontend' directory
+      target: production  # Use the production stage for frontend
+    ports:
+      - "3007:80"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app  # Enable live-reloading for frontend
+    environment:
+      - NODE_ENV=development  # For development
+volumes:
+  postgres_data:
