@@ -49,13 +49,7 @@ class Trainer:
         # Recuperar as confiabilidades (primeiro tenta a do pesquisador, depois a do sistema)
         neighbors = self.data_loader.data.iloc[indices[0]]
         neighbors_reliability = np.where(neighbors['researcher_reliability'].notnull(),
-                                         neighbors['researcher_reliability'],
-                                         neighbors['system_reliability'])
-        neighbors_climate = neighbors['climate']
-
-        # Calcula os pesos com base na confiabilidade (valores entre 0 e 1)
-        weights = np.array(neighbors_reliability) / 100  # Converte para proporção
-
+l
         # Contabiliza o clima com base nos pesos
         weighted_climates = {}
         for i, climate in enumerate(neighbors_climate):
