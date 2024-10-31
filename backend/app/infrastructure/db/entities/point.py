@@ -10,3 +10,7 @@ class Point(Base):
     long = Column(Float(11), nullable=False)
     climate = Column(String(1), nullable=False)
     age = Column(Integer, nullable=False)
+    lithology_weight = Column(Integer, nullable=True)
+    paleontology_weight = Column(Integer, nullable=True)
+    palinomorphs_weight = Column(Integer, nullable=True)
+    geochemistry_weight = Column(Integer, nullable=True)
